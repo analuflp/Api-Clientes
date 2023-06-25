@@ -1,0 +1,54 @@
+package ayty.analuisa.projeto.models;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
+
+import java.time.LocalDate;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Cliente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false, length = 150)
+    @NotEmpty(message = "{campo.nome}")
+    private String nome;
+
+    @Column(nullable = false, length = 11)
+    @CPF(message = "{campo.inv}")
+    @NotNull(message = "{campo.cpf}")
+    private String cpf;
+
+    @Column (name = "data", updatable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataCadastro;
+
+    @PrePersist
+    public void prePersist(){
+        setDataCadastro(LocalDate.now());
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
